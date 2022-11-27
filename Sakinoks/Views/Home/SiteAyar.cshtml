@@ -1,0 +1,373 @@
+﻿@model Sakinoks.Models.ViewModel
+@{
+    ViewBag.Title = "Site Ayar";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@if (TempData["Kaydedildi"] != null)
+{
+
+    <script>
+        Swal.fire("Değişiklikler", "Kaydedildi", "success")
+    </script>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Tarih: @DateTime.Now.ToLongDateString()</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Site Adı</th>
+                    <th>Slider Resmi(1920x1280)</th>
+                    <th>Hakkında Başlık</th>
+                    <th>Hakkında Yazı</th>
+                    <th>Adres</th>
+                    <th>Harita Kodu</th>
+                    <th>Mail</th>
+                    <th>Telefon 1</th>
+                    <th>Telefon 2</th>
+                    <th>Telefon 3</th>
+                    <th>Site Hizmet (abstract)</th>
+                    <th>Site İçerik Açıklama (description)</th>
+                    <th>Anahtar Kelimeler (keywords)</th>
+                    <th>Düzenle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.siteAyars)
+                {
+                <tr>
+                    <td>@item.site_adi</td>
+                    <td><img src="@item.slider" width="100" height="100"></td>
+                    <td>
+                        <button type="button" clmodalass="btn btn-default" data-toggle="modal" data-target="#modal_@item.siteayarID">
+                            Hakkında Başlık
+                        </button>
+                        <div class="modal fade" id="modal_@item.siteayarID">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Hakkında Başlık</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>@Html.Raw(item.hakkinda_baslik)</p>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" clmodalass="btn btn-default" data-toggle="modal" data-target="#modal2_@item.siteayarID">
+                            Hakkında Yazı
+                        </button>
+                        <div class="modal fade" id="modal2_@item.siteayarID">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Hakkında Yazı</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>@Html.Raw(item.hakkinda_yazi)</p>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" clmodalass="btn btn-default" data-toggle="modal" data-target="#modal3_@item.siteayarID">
+                            Adres
+                        </button>
+                        <div class="modal fade" id="modal3_@item.siteayarID">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Adres</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>@Html.Raw(item.adres)</p>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" clmodalass="btn btn-default" data-toggle="modal" data-target="#modal4_@item.siteayarID">
+                            Harita
+                        </button>
+                        <div class="modal fade" id="modal4_@item.siteayarID">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Harita</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>@Html.Raw(item.harita)</p>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    </td>
+                    <td>
+                        @if (item.mail == null)
+                        {
+                            <i class="text-red fas fa-times"></i>
+                        }
+                        else
+                        {
+                            @item.mail
+                        }
+                    </td>
+                    <td>
+                        @if (item.telefon1 == null || item.telefon1 == "")
+                        {
+                            <i class="text-red fas fa-times"></i>
+                        }
+                        else
+                        {
+                            @item.telefon1
+                        }
+                    </td>
+                    <td>
+                        @if (item.telefon2 == null || item.telefon2 == "")
+                        {
+                            <i class="text-red fas fa-times"></i>
+                        }
+                        else
+                        {
+                            @item.telefon2
+                        }
+                    </td>
+                    <td>
+                        @if (item.telefon3 == null || item.telefon3 == "")
+                        {
+                            <i class="text-red fas fa-times"></i>
+                        }
+                        else
+                        {
+                            @item.telefon3
+                        }
+                    </td>
+                    <td>
+                        <button type="button" clmodalass="btn btn-default" data-toggle="modal" data-target="#modal5_@item.siteayarID">
+                            Site Hizmet (abstract)
+                        </button>
+                        <div class="modal fade" id="modal5_@item.siteayarID">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Site Hizmet (abstract)</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>@Html.Raw(item._abstract)</p>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" clmodalass="btn btn-default" data-toggle="modal" data-target="#modal6_@item.siteayarID">
+                            Site İçerik Açıklama (description)
+                        </button>
+                        <div class="modal fade" id="modal6_@item.siteayarID">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Site İçerik Açıklama (description)</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>@Html.Raw(item.description)</p>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" clmodalass="btn btn-default" data-toggle="modal" data-target="#modal7_@item.siteayarID">
+                            Anahtar Kelimeler (keywords)
+                        </button>
+                        <div class="modal fade" id="modal7_@item.siteayarID">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Anahtar Kelimeler (keywords)</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>@Html.Raw(item.keywords)</p>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                    </td>
+
+
+
+                    <td>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#guncelle_@item.siteayarID" data-whatever="">Düzenle</button>
+                        <div class="modal fade" id="guncelle_@item.siteayarID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+
+                                <div class="modal-content">
+                                    @using (Html.BeginForm("siteduzenle", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Düzenle</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label ">Site Adı:</label>
+                                                <input type="text" class="form-control" id="recipient-name" name="site_adi" value="@item.site_adi">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="col-form-label">Slider Resim:&nbsp; </label>
+                                                <img src="@item.slider" name="resim" alt="@item.slider" width="100" height="100">
+                                                <input type="file" name="slider" />
+
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">Hakkında Başlık:</label>
+                                                    <textarea class="form-control" id="message-text" name="hakkinda_baslik">@item.hakkinda_baslik </textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">Hakkında Yazı:</label>
+                                                    <textarea class="form-control" id="message-text" name="hakkinda_yazi">@item.hakkinda_yazi </textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">Adres:</label>
+                                                    <textarea class="form-control" id="message-text" name="adres">@item.adres </textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">Harita Kodu:</label>
+                                                    <textarea class="form-control" id="message-text" name="harita">@item.harita </textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label ">Mail:</label>
+                                                    <input type="text" class="form-control" id="recipient-name" name="mail" value="@item.mail">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">Telefon 1:</label>
+                                                    <input type="text" class="form-control" id="recipient-name" name="telefon1" value="@item.telefon1">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">Telefon 2:</label>
+                                                    <input type="text" class="form-control" id="recipient-name" name="telefon2" value="@item.telefon2">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">Telefon 3:</label>
+                                                    <input type="text" class="form-control" id="recipient-name" name="telefon3" value="@item.telefon3">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">Site Hizmet (abstract):</label>
+                                                    <textarea class="form-control" id="message-text" name="_abstract">@item._abstract </textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">Site İçerik Açıklama (description):</label>
+                                                    <textarea class="form-control" id="message-text" name="description">@item.description </textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">Anahtar Kelimeler (keywords):</label>
+                                                    <textarea class="form-control" id="message-text" name="keywords">@item.keywords </textarea>
+                                                </div>
+                                                <p></p>
+
+                                                <input name="siteayarID" type="hidden" value="@item.siteayarID" />
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                                                <button type="submit" class="btn btn-primary">Güncelle</button>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Site Adı</th>
+                    <th>Slider Resmi(1920x1280)</th>
+                    <th>Hakkında Başlık</th>
+                    <th>Hakkında Yazı</th>
+                    <th>Adres</th>
+                    <th>Harita Kodu</th>
+                    <th>Mail</th>
+                    <th>Telefon 1</th>
+                    <th>Telefon 2</th>
+                    <th>Telefon 3</th>
+                    <th>Site Hizmet (abstract)</th>
+                    <th>Site İçerik Açıklama (description)</th>
+                    <th>Anahtar Kelimeler (keywords)</th>
+                    <th>Düzenle</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>

@@ -1,0 +1,110 @@
+﻿@model Sakinoks.Models.ViewModel
+@{
+    ViewBag.Title = "ÜrünEkle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@if (TempData["UrunEklendi"] != null)
+{
+
+    <script>
+        Swal.fire("Urun Ekleme", "Başarılı", "success")
+    </script>
+}
+
+@if (TempData["ResimHata"] != null)
+{
+
+    <script>
+        Swal.fire("Resim Yükleme Alanı ", "Boş Bırakılamaz", "error")
+    </script>
+}
+
+@if (TempData["UrunMevcut"] != null)
+{
+
+    <script>
+        Swal.fire("Aynı Ürün Mevcut", "Lütfen Kontrol Ediniz", "error")
+    </script>
+}
+
+
+<div class="content-wthree2">
+    <div class="container">
+        <p></p>
+        <h2>Randevu Form Sayfası</h2>
+        @using (Html.BeginForm("UrunEkle", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="form-group">
+                <label for="recipient-name" class="col-form-label ">Ürün İsmi:</label>
+                <input type="text" class="form-control" id="recipient-name" name="isim" required="">
+            </div>
+            <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Ürün Kodu:</label>
+                <input type="text" class="form-control" id="recipient-name" name="urunkodu" required="">
+            </div>
+            <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Kod:</label>
+                <input type="text" class="form-control" id="recipient-name" name="kod" required="">
+            </div>
+            <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Resim:&nbsp; </label>
+                <input type="file" name="resim" />
+
+            </div>
+            <div class="form-group">
+                <label for="message-text" class="col-form-label">Açıklama:</label>
+                <textarea class="form-control" id="message-text" name="aciklama"></textarea>
+            </div>
+
+            <div class="styled-input">
+                <label for="recipient-name" class="col-form-label">Kategori:</label>
+                <select id="category1" required="" name="kategori">
+                    <option value="">Kategori*</option>
+
+                    @foreach (var item in Model.kategorilers)
+                    {
+
+                        <option value="@item.kategoriID">@item.adi</option>
+
+
+                    }
+
+                </select>
+                <span></span>
+            </div>
+
+            <p></p>
+            <div class="content-wthree2">
+                <div class="grid-w3layouts1">
+                    <div class="w3-agile1">
+                        <label class="rating">Ürün Aktiflik<span>*</span></label>
+                        <ul>
+                            <li>
+                                <input type="radio" id="a-option" value="true" name="aktif">
+                                <label for="a-option">Aktif</label>
+                                <div class="check"></div>
+                            </li>
+                            <li>
+                                <input type="radio" id="b-option" value="false" name="aktif" checked>
+                                <label for="b-option">Pasif</label>
+                                <div class="check"><div class="inside"></div></div>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+
+
+            <p></p>
+
+            <button type="submit" class="btn btn-primary">Ürün Ekle</button>
+            <div class="clear"> </div>
+            <p></p>
+        }
+
+    </div>
+</div>

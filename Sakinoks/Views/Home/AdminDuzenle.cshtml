@@ -1,0 +1,177 @@
+﻿@model Sakinoks.Models.ViewModel
+@{
+    ViewBag.Title = "Admin Ekle / Sil";
+}
+
+
+
+@if (TempData["AdminEklenmedi"] != null)
+{
+
+    <script>
+        Swal.fire("Admin", "Zaten Var", "error")
+    </script>
+}
+
+@if (TempData["AdminEklendi"] != null)
+{
+
+    <script>
+        Swal.fire("Admin", "Eklendi", "success")
+    </script>
+}
+
+@if (TempData["AdminSilindi"] != null)
+{
+
+    <script>
+        Swal.fire("Admin", "Silindi", "success")
+    </script>
+}
+
+
+<div class="content-wthree2">
+    <div class="container">
+        <!-- Horizontal Form -->
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Yönetici Ekle</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            @using (Html.BeginForm("AdminEkle", "Home", FormMethod.Post))
+            {
+                <form class="form-horizontal">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Ad</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="adi_soyadi" class="form-control" id="inputEmail3" placeholder="Ad" required="">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputPassword3" class="col-sm-2 col-form-label">Şifre</label>
+                            <div class="col-sm-10">
+                                <input type="password" name="sifre" class="form-control" id="inputPassword3" placeholder="Şifre" required="">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="offset-sm-2 col-sm-10">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" onclick="myFunction()" id="exampleCheck2">
+                                    <label class="form-check-label" for="exampleCheck2">Şifreyi Göster</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info">Ekle</button>
+                    </div>
+                    <!-- /.card-footer -->
+                </form>
+            }
+            <br />
+
+
+        </div>
+    </div>
+
+    <div class="content-wthree2">
+        <div class="container">
+            <!-- Horizontal Form -->
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Yönetici Görüntüle / Sil</h3>
+                </div>
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+
+                                <div class="card">
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <table id="example1" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Yönetici</th>
+                                                    <th>Sil</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.admins)
+                                                {
+                                                    <tr>
+                                                        <td>@item.adi_soyadi</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#sil_@item.adminID">
+                                                                Sil
+                                                            </button>
+                                                            <div class="modal fade" id="sil_@item.adminID">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h4 class="modal-title">istekler</h4>
+                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <h4>Admini Silmek İstiyor musunuz?</h4>
+                                                                        </div>
+                                                                        <div class="modal-footer justify-content-between">
+                                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Vazgeç</button>
+                                                                            @Html.ActionLink("Sil", "AdminSil", new { item.adminID }, new { @class = "btn btn-danger" })
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- /.modal-content -->
+                                                                </div>
+                                                                <!-- /.modal-dialog -->
+                                                            </div>
+                                                        </td>
+
+                                                        <!-- /.modal -->
+
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Yönetici</th>
+                                                    <th>Sil</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("inputPassword3");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
+</script>
+
+
+

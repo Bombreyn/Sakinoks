@@ -1,0 +1,272 @@
+﻿
+@model Sakinoks.Models.ViewModel
+@{
+    ViewBag.Title = "Ürünler";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@if (TempData["UrunSilindi"] != null)
+{
+
+
+    <script>
+        Swal.fire("Ürün", "Silindi", "success")
+    </script>
+}
+@if (TempData["UrunGuncellendi"] != null)
+{
+
+
+    <script>
+        Swal.fire("Ürün", "Güncellendi", "success")
+    </script>
+}
+
+
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Tarih: @DateTime.Now.ToLongDateString()</h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Ürün İsmi/Kodu</th>
+                    <th>Ürün Resmi</th>
+                    <th>Ürün Açıklaması</th>
+                    <th>Kategori Adı</th>
+                    <th>Aktif Durumu</th>
+                    <th>Son Düzenlenme Tarihi</th>
+                    <th>Son Düzenleyen / Ekleyen Admin</th>
+                    <th>Düzenle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.uruns)
+                {
+                    <tr>
+                        <td>@item.isim<p>(#@item.urunkodu)</p></td>
+                        <td><img src="@item.resim" alt="@item.isim" width="100" height="100"></td>
+                        <td>
+                            <button type="button" clmodalass="btn btn-default" data-toggle="modal" data-target="#modal_@item.urunID">
+                                Açıklama
+                            </button>
+                            <div class="modal fade" id="modal_@item.urunID">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Açıklama</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>@Html.Raw(item.aciklama)&hellip;</p>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                        </td>
+                        <td>@item.Kategoriler.adi</td>
+                        <td>
+                            @if (item.aktif == true)
+                            {
+                                <i class="text-green fas fa-check"></i>
+                            }
+                            else
+                            {
+                                <i class="text-red fas fa-times"></i>
+                            }
+                        </td>
+                        <td>@item.tarih</td>
+                        <td>@item.Admin.adi_soyadi</td>
+
+
+
+                        <td>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#guncelle_@item.urunID" data-whatever="">Güncelle</button>
+                            <div class="modal fade" id="guncelle_@item.urunID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+
+                                    <div class="modal-content">
+                                        @using (Html.BeginForm("UrunDuzenle", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Güncelle</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label ">Ürün Adı:</label>
+                                                    <input type="text" class="form-control" id="recipient-name" name="isim" value="@item.isim">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">Ürün Kodu:</label>
+                                                    <input type="text" class="form-control" id="recipient-name" name="urunkodu" value="@item.urunkodu">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">Resim:&nbsp; </label>
+                                                    <img src="@item.resim" name="resim" alt="@item.isim" width="100" height="100">
+                                                    <input type="file" name="resim" />
+
+                                                </div>
+
+
+                                                <div class="styled-input">
+                                                    <label for="recipient-name" class="col-form-label">Kategori:</label>
+                                                    <select id="category1" required="" name="kategori">
+                                                        <option value="">Kategori*</option>
+
+                                                        @foreach (var item2 in Model.kategorilers)
+                                                        {
+                                                            if (item2.kategoriID == item.kategoriID)
+                                                            {
+                                                                <option value="@item2.kategoriID" selected>@item2.adi</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@item2.kategoriID">@item2.adi</option>
+                                                            }
+
+                                                        }
+
+                                                    </select>
+                                                    <span></span>
+                                                </div>
+                                                <br />
+                                                <div class="styled-input">
+                                                    <label for="recipient-name" class="col-form-label">Kategori Kodu:</label>
+                                                    <select id="category1" required="" name="kod">
+                                                        <option value="">Kategori*</option>
+
+                                                        @foreach (var item2 in Model.kategorilers)
+                                                        {
+                                                            if (item2.kategoriID == item.kategoriID)
+                                                            {
+                                                                <option value="@item2.etiket" selected>@item2.etiket</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@item2.etiket">@item2.etiket</option>
+                                                            }
+
+                                                        }
+
+                                                    </select>
+                                                    <span></span>
+                                                </div>
+                                                <p></p>
+                                                <div class="content-wthree2">
+                                                    <div class="grid-w3layouts1">
+                                                        <div class="w3-agile1">
+                                                            <label class="rating">Aktif<span>*</span></label>
+                                                            <ul>
+                                                                @if (item.aktif == true)
+                                                                {
+                                                                    <li>
+                                                                        <input type="radio" id="a-option" value="true" name="aktif" checked>
+                                                                        <label for="a-option">Aktif</label>
+                                                                        <div class="check"></div>
+                                                                    </li>
+
+                                                                    <li>
+                                                                        <input type="radio" id="b-option" value="false" name="aktif">
+                                                                        <label for="b-option">Pasif</label>
+                                                                        <div class="check"><div class="inside"></div></div>
+                                                                    </li>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <li>
+                                                                        <input type="radio" id="a-option" value="true" name="aktif">
+                                                                        <label for="a-option">Aktif</label>
+                                                                        <div class="check"></div>
+                                                                    </li>
+
+                                                                    <li>
+                                                                        <input type="radio" id="b-option" value="false" name="aktif" checked>
+                                                                        <label for="b-option">Pasif</label>
+                                                                        <div class="check"><div class="inside"></div></div>
+                                                                    </li>
+                                                                }
+
+                                                            </ul>
+                                                            <div class="clear"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clear"></div>
+                                                </div>
+                                                <p></p>
+                                                <div class="form-group">
+                                                    <label for="message-text" class="col-form-label">Açıklama:</label>
+                                                    <textarea class="form-control" id="message-text" name="aciklama">@item.aciklama </textarea>
+                                                </div>
+
+                                                <input name="urunID" type="hidden" value="@item.urunID" />
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                                                <button type="submit" class="btn btn-primary">Güncelle</button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#sil_@item.urunID">
+                                Sil
+                            </button>
+                            <div class="modal fade" id="sil_@item.urunID">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Açıklama</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4>Ürünü Silmek İstiyor musunuz ?</h4>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Vazgeç</button>
+                                            @Html.ActionLink("Sil", "Sil", new { item.urunID }, new { @class = "btn btn-danger" })
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Ürün İsmi/Kodu</th>
+                    <th>Ürün Resmi</th>
+                    <th>Ürün Açıklaması</th>
+                    <th>Kategori Adı</th>
+                    <th>Aktif Durumu</th>
+                    <th>Son Düzenlenme Tarihi</th>
+                    <th>Son Düzenleyen / Ekleyen Admin</th>
+                    <th>Düzenle</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- /.card-body -->
+</div>
